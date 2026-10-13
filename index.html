@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>LoTengo Test</title>
-
 <style>
 body{
 font-family:Arial;
@@ -21,7 +20,6 @@ text-align:center;
 box-shadow:0 5px 20px #ddd;
 }
 </style>
-
 </head>
 
 <body>
@@ -36,6 +34,7 @@ Conectando con Supabase...
 
 </div>
 
+
 <script>
 
 const SUPABASE_URL = "https://oqudaukvclkywcjocfkx.supabase.co";
@@ -46,14 +45,20 @@ const SUPABASE_KEY = "sb_publishable_QRkfDmrq0bk74BYA9W0ABQ_Uy9qgkqH";
 fetch(
 SUPABASE_URL + "/rest/v1/hosting_test?select=mensaje",
 {
+method:"GET",
 headers:{
-apikey: SUPABASE_KEY,
-Authorization:"Bearer " + SUPABASE_KEY
+"apikey": SUPABASE_KEY,
+"Authorization": "Bearer " + SUPABASE_KEY
 }
 }
 )
 
-.then(response => response.json())
+.then(response => {
+if(!response.ok){
+throw new Error("HTTP " + response.status);
+}
+return response.json();
+})
 
 .then(data => {
 
@@ -62,10 +67,10 @@ document.getElementById("resultado").innerHTML =
 
 })
 
-.catch(error=>{
+.catch(error => {
 
 document.getElementById("resultado").innerHTML =
-"❌ Error conectando";
+"❌ Error: " + error.message;
 
 });
 
